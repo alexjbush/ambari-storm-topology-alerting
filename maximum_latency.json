@@ -1,0 +1,63 @@
+{
+  "AlertDefinition": {
+    "service_name": "STORM",
+    "component_name": "STORM_UI_SERVER",
+    "name": "topology_maximum_latency",
+    "label": "topology_maximum_latency",
+    "description": "This alert is triggered if the total latency for processing a message goes beyond a threshold of seconds.",
+    "interval": 1,
+    "scope": "SERVICE",
+    "enabled": true,
+    "source": {
+      "type": "SCRIPT",
+      "path": "stormTopologyAlert.py",
+      "parameters": [
+      {
+        "name": "topology_id",
+        "display_name": "Topology ID or Name",
+        "value": "WordCount",
+        "type": "STRING",
+        "description": "ID or Name of Topology to monitor"
+      },
+      {
+        "name": "field_name",
+        "display_name": "Field Name",
+        "value": "topologyStats.completeLatency",
+        "type": "STRING",
+        "description": "Name of field to return from UI Rest API"
+      },
+      {
+        "name": "field_type",
+        "display_name": "Field Type",
+        "value": "DOUBLE",
+        "type": "STRING",
+        "description": "Datatype of returned field. One of LONG, STRING, DOUBLE, INTEGER."
+      },
+      {
+        "name": "comparison",
+        "display_name": "Comparison to perform",
+        "value": "gt",
+        "type": "STRING",
+        "description": "Comparison operation to perform. One of eq,ne,lt,gt,le,ge."
+      },
+      {
+        "name": "warning.threshold",
+        "display_name": "Latency Warning",
+        "value": 60,
+        "type": "STRING",
+        "units": "seconds",
+        "description": "This alert is triggered if the maximum latency is over 60 seconds",
+        "threshold": "WARNING"
+      },
+      {
+        "name": "critical.threshold",
+        "display_name": "Latency Critical",
+        "value": 120,
+        "type": "STRING",
+        "units": "seconds",
+        "description": "This alert is triggered if the maximum latency is over 120 seconds",
+        "threshold": "CRITICAL"
+      }]
+    }
+  }
+}

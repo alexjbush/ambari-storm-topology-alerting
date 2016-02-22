@@ -1,0 +1,63 @@
+{
+  "AlertDefinition": {
+    "service_name": "STORM",
+    "component_name": "STORM_UI_SERVER",
+    "name": "topology_status",
+    "label": "topology_status",
+    "description": "This alert is triggered if a topology does not have an ACTIVE status",
+    "interval": 1,
+    "scope": "SERVICE",
+    "enabled": true,
+    "source": {
+      "type": "SCRIPT",
+      "path": "stormTopologyAlert.py",
+      "parameters": [
+      {
+        "name": "topology_id",
+        "display_name": "Topology ID or Name",
+        "value": "WordCount",
+        "type": "STRING",
+        "description": "ID or Name of Topology to monitor"
+      },
+      {
+        "name": "field_name",
+        "display_name": "Field Name",
+        "value": "status",
+        "type": "STRING",
+        "description": "Name of field to return from UI Rest API"
+      },
+      {
+        "name": "field_type",
+        "display_name": "Field Type",
+        "value": "STRING",
+        "type": "STRING",
+        "description": "Datatype of returned field. One of LONG, STRING, DOUBLE, INTEGER."
+      },
+      {
+        "name": "comparison",
+        "display_name": "Comparison to perform",
+        "value": "ne",
+        "type": "STRING",
+        "description": "Comparison operation to perform. One of eq,ne,lt,gt,le,ge."
+      },
+      {
+        "name": "warning.threshold",
+        "display_name": "Warning Status",
+        "value": "ACTIVE",
+        "type": "STRING",
+        "units": "state",
+        "description": "This alert is triggered if a topology does not have a given state.",
+        "threshold": "WARNING"
+      },
+      {
+        "name": "critical.threshold",
+        "display_name": "Latency Critical",
+        "value": "ACTIVE",
+        "type": "STRING",
+        "units": "state",
+        "description": "This alert is triggered if a topology does not have a given state.",
+        "threshold": "CRITICAL"
+      }]
+    }
+  }
+}
