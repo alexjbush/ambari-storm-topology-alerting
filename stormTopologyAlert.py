@@ -41,6 +41,8 @@ COMPARISON_KEY = 'comparison'
 FIELD_TYPE_KEY = 'field_type'
 FIELD_NAME_KEY = 'field_name'
 TOPOLOGY_ID_KEY = 'topology_id'
+HTTPS_ENABLED_KEY = 'https_enabled'
+HTTPS_PORT_KEY = 'https_port'
 
 DEFAULT_WINDOW_VALUE = '600'
 
@@ -124,6 +126,15 @@ def execute(configurations={}, parameters={}, host_name=None):
   if TOPOLOGY_ID_KEY in parameters:
     topology_id_val = parameters[TOPOLOGY_ID_KEY]
 
+  if HTTPS_ENABLED_KEY in parameters and lower(str(parameters[HTTPS_ENABLED_KEY])) == 'true':
+    if HTTPS_PORT_KEY in parameters:
+      stormuiport = str(parameters[HTTPS_PORT_KEY])
+      protocol = 'https'
+    else:
+      return (('UNKNOWN', ['Please provide a port number as parameter: '+HTTPS_PORT_KEY]))
+  else:
+    protocol = 'http'
+
   # Check comparison and field type combination
   if not field_type_val in ALLOWED_COMPARISON_VALUES.keys():
     return (('UNKNOWN', ['Field type error, must be one of: '+','.join(ALLOWED_COMPARISON_VALUES.keys())]))
@@ -137,7 +148,7 @@ def execute(configurations={}, parameters={}, host_name=None):
   try:
 
     # Set up url to query
-    rest_api_request_summary = 'http://'+host_name+':'+stormuiport+'/api/v1/topology/summary'
+    rest_api_request_summary = protocol+'://'+host_name+':'+stormuiport+'/api/v1/topology/summary'
 
     # Kerberos curl
     if kerberos_principal is not None and kerberos_keytab is not None and security_enabled:
@@ -168,7 +179,7 @@ def execute(configurations={}, parameters={}, host_name=None):
       return (('UNKNOWN', ['No topology found with id or name: '+topology_id_val]))
 
     # Get topology information
-    rest_api_request_topology = 'http://'+host_name+':'+stormuiport+'/api/v1/topology/'+topology_id
+    rest_api_request_topology = protocol+'://'+host_name+':'+stormuiport+'/api/v1/topology/'+topology_id
 
     # Kerberos curl
     if kerberos_principal is not None and kerberos_keytab is not None and security_enabled:
@@ -219,7 +230,7 @@ def execute(configurations={}, parameters={}, host_name=None):
   except:
     label = traceback.format_exc()
     result_code = 'UNKNOWN'
- 
+
   return ((result_code, [label]))
 
 
@@ -257,5 +268,3 @@ def comparison(val1,val2,comp):
   elif comp == 'lt' and val1 < val2:
     return True
   return False
-
-

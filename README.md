@@ -12,9 +12,28 @@ You can choose any of these fields, and use any of the following operators to ma
 
 You can specify either the topology name or id to reference a given topology.
 
-The TYPE field must match the one from the API. 
+The TYPE field must match the one from the API.
 
 In the case of times-sliced windows, the minimum window of 600s will be chosen.
+
+##### Optional HTTPS
+You can optionally allow the alert to access the Storm UI via HTTPS by providing two additional variables in the alert definition.
+```javascript
+{
+  "name": "https_enabled",
+  "display_name": "Use https for Storm UI",
+  "value": "true",
+  "type": "STRING",
+  "description": "Set to true to use HTTPS to access the Storm UI"
+},
+{
+  "name": "https_port",
+  "display_name": "Port to access HTTPS Storm UI",
+  "value": "8740",
+  "type": "STRING",
+  "description": "The port on which Storm UI servers HTTPS"
+}
+```
 
 ### Examples
 
@@ -36,7 +55,7 @@ This will alert is the maximum latency (average time taken for a message to trav
 
 > Taken from [https://github.com/monolive/ambari-custom-alerts](https://github.com/monolive/ambari-custom-alerts)
 
-Push the new alert via Ambari REST API. 
+Push the new alert via Ambari REST API.
 
 ```sh
 curl -u admin:admin -i -H 'X-Requested-By: ambari' -X POST -d @alerts.json http://ambari.cloudapp.net:8080/api/v1/clusters/hdptest/alert_definitions
