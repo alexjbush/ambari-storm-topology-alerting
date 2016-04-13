@@ -231,6 +231,7 @@ def execute(configurations={}, parameters={}, host_name=None):
     label = traceback.format_exc()
     result_code = 'UNKNOWN'
 
+  label = 'Topology: '+topology_id_val+', '+label
   return ((result_code, [label]))
 
 
